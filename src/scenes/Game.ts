@@ -20,14 +20,19 @@ export class Game extends Scene {
             { frameWidth: 32, frameHeight: 48 }
         );
 
+        this.load.audio('music', 'assets/music.mp3');
+        this.load.audio('DeadSound', 'assets/DeadSound.mp3')
+
     }
     stars: Phaser.GameObjects.Group;
-    
+
     create() {
+        this.sound.unlock();
+        this.sound.play('music', { loop: true });
         let backgroundCamera = this.cameras.cameras[0];
         let playerCamera = this.cameras.add();
         let uiCamera = this.cameras.add();
-        
+
         this.cursors = this.input.keyboard!.createCursorKeys();
 
         let sky = this.add.image(400, 300, 'sky');
@@ -122,36 +127,37 @@ export class Game extends Scene {
         this.starText = this.add.text(16, 16, 'Stars: ' + this.stars.countActive(true), { fontSize: '32px', fill: '#000' });
 
         //this.platforms.create(600, 400, 'ground');
-       // this.platforms.create(50, 250, 'ground');
-       // this.platforms.create(750, 220, 'ground');
-       // this.platforms.create(1250, 230, 'ground');
-       // this.platforms.create(1500, 200, 'ground');
-       // this.platforms.create(2100, 150, 'ground');
-       // this.platforms.create(2400, 200, 'ground');
-       // this.platforms.create(3000, 150, 'ground');
-       // this.platforms.create(3800, 100, 'ground');
-       // this.platforms.create(3400, 10, 'ground');
-       // this.platforms.create(4000, 0, 'ground');
-       // this.platforms.create(4600, 50, 'ground');
-       // this.platforms.create(5100, 100, 'ground');
-       // this.platforms.create(5900, 200, 'ground');
-       // this.platforms.create(5600, 30, 'ground');
+        // this.platforms.create(50, 250, 'ground');
+        // this.platforms.create(750, 220, 'ground');
+        // this.platforms.create(1250, 230, 'ground');
+        // this.platforms.create(1500, 200, 'ground');
+        // this.platforms.create(2100, 150, 'ground');
+        // this.platforms.create(2400, 200, 'ground');
+        // this.platforms.create(3000, 150, 'ground');
+        // this.platforms.create(3800, 100, 'ground');
+        // this.platforms.create(3400, 10, 'ground');
+        // this.platforms.create(4000, 0, 'ground');
+        // this.platforms.create(4600, 50, 'ground');
+        // this.platforms.create(5100, 100, 'ground');
+        // this.platforms.create(5900, 200, 'ground');
+        // this.platforms.create(5600, 30, 'ground');
         this.stars.children.iterate(function (child) {
-        
+
             child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-        
+
         });
 
 
         this.physics.add.collider(this.player, this.platforms);
         this.physics.add.collider(this.stars, this.platforms);
         this.physics.add.overlap(this.player, this.stars, (player: any, star: any) => {
-            star.disableBody(true,true);
+            star.disableBody(true, true);
+
             this.starText.setText('Stars: ' + this.stars.countActive(true))
         }, undefined, this);
 
         // Camera changes to show the UI
-        for (let cam of [backgroundCamera, uiCamera]){
+        for (let cam of [backgroundCamera, uiCamera]) {
             cam.ignore(this.player);
             cam.ignore(this.platforms);
             cam.ignore(this.stars);
@@ -165,14 +171,22 @@ export class Game extends Scene {
     update() {
         console.log("x: " + this.player.x);
         console.log("y: " + this.player.y);
-        if (this.player.y > 600){
+        if (this.player.y > 600) {
             this.scene.start("GameOver");
+            this.sound.play('DeadSound');
         }
+        if (this.stars.countActive() < 1 ){
+            this.scene.start("WinScreen");
+        }
+        //this.stars.countActive(0);
+       // console.log();
+       // if (this.stars.countActive >1) {
+       //     this.scene.start("WinScreen");
+       // }
         if (this.cursors.left.isDown) {
             this.player.setVelocityX(-160);
             this.player.anims.play('left', true);
-        }
-        else if (this.cursors.right.isDown) {
+        }else if (this.cursors.right.isDown) {
             this.player.setVelocityX(160);
             this.player.anims.play('right', true);
         }
