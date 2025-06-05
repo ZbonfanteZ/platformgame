@@ -34,7 +34,8 @@ const config: Types.Core.GameConfig = {
         Instruction,
         MainGame,
         GameOver,
-        WinScreen
+        WinScreen,
+        Second
     ]
 };
 

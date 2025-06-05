@@ -7,7 +7,7 @@ export class Game extends Scene {
     starText: any;
 
     constructor() {
-        super('Game');
+        super('Second');
     }
 
     preload() {
@@ -85,13 +85,6 @@ export class Game extends Scene {
             frameRate: 10,
             repeat: -1
         });
-        this.bombs = this.physics.add.group({
-            allowGravity: true
-        });
-        //create bombs
-        this.bombs.create(50,509 'bomb');
-
-
         this.stars = this.physics.add.group({
             allowGravity: true
         });
@@ -182,12 +175,9 @@ export class Game extends Scene {
             this.scene.start("GameOver");
             this.sound.play('DeadSound');
         }
-       if (this.stars.countActive() < 29) {
-           //this.scene.start("WinScreen");
-       this.scene.start("Second");
-
+       if (this.stars.countActive() < 1) {
+           this.scene.start("WinScreen");
        }
-
         if (this.cursors.left.isDown) {
             this.player.setVelocityX(-160);
             this.player.anims.play('left', true);
