@@ -1,10 +1,12 @@
 import { Scene } from 'phaser';
 
-export class Game extends Scene {
+export class Second extends Scene {
     platforms: Phaser.Physics.Arcade.StaticGroup;
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     starText: any;
+    bomb: any;
+    bombs: any;
 
     constructor() {
         super('Second');
@@ -85,6 +87,21 @@ export class Game extends Scene {
             frameRate: 10,
             repeat: -1
         });
+         this.bombs = this.physics.add.group({
+            allowGravity: true
+        });
+        //create bombs
+            this.bombs.create(70,450, 'bomb');
+            this.bombs.create(170,450, 'bomb');
+            this.bombs.create(500,1, 'bomb');
+            this.bombs.create(1342,1,'bomb');
+            this.bombs.create(888,1, 'bomb');
+            this.bombs.create(2270,1, 'bomb');
+            this.bombs.create(3500,1, 'bomb');
+            this.bombs.create(4747,1, 'bomb');
+            this.bombs.create(5912,1, 'bomb');
+          
+
         this.stars = this.physics.add.group({
             allowGravity: true
         });
@@ -148,11 +165,20 @@ export class Game extends Scene {
         });
 
 
+
+           // this.starText.setText('Stars: ' + this.stars.countActive(true))
+        //}, undefined, this);
         this.physics.add.collider(this.player, this.platforms);
         this.physics.add.collider(this.stars, this.platforms);
+        this.physics.add.collider(this.bombs, this.platforms);
+        
+        this.physics.add.overlap(this.player, this.bombs, (player: any, bomb: any) => {
+            bomb.disableBody(true, true);
+            this.scene.start("GameOver");
+            this.sound.play('DeadSound');
+        }, undefined, this);
         this.physics.add.overlap(this.player, this.stars, (player: any, star: any) => {
             star.disableBody(true, true);
-
             this.starText.setText('Stars: ' + this.stars.countActive(true))
         }, undefined, this);
 
@@ -161,12 +187,14 @@ export class Game extends Scene {
             cam.ignore(this.player);
             cam.ignore(this.platforms);
             cam.ignore(this.stars);
+            cam.ignore(this.bombs);
         }
         playerCamera.ignore(this.starText);
         playerCamera.ignore(sky);
         backgroundCamera.ignore(this.starText);
         uiCamera.ignore(sky);
     }
+    
 
     update() {
         console.log("x: " + this.player.x);

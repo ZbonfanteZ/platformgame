@@ -5,6 +5,8 @@ export class Game extends Scene {
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     starText: any;
+    bomb: any;
+    bombs: any;
 
     constructor() {
         super('Game');
@@ -85,11 +87,14 @@ export class Game extends Scene {
             frameRate: 10,
             repeat: -1
         });
-        this.bombs = this.physics.add.group({
-            allowGravity: true
-        });
+       // this.bombs = this.physics.add.group({
+       //     allowGravity: true
+       // });
         //create bombs
-        this.bombs.create(50,509 'bomb');
+       // this.bombs.create(50,509, 'bomb');
+       // this.bomb.create(50,509, 'bomb');
+        //this.bomb.create(50,509, 'bomb');
+          // this.bomb.create(50,509, 'bomb');
 
 
         this.stars = this.physics.add.group({
@@ -162,6 +167,16 @@ export class Game extends Scene {
 
             this.starText.setText('Stars: ' + this.stars.countActive(true))
         }, undefined, this);
+
+       //bombs
+       
+        //this.physics.add.overlap(this.player, this.bombs, (player: any, bomb: any) => {
+       //     bomb.disableBody(true, true);
+
+      //      this.starText.setText('Bombs: ' + this.bomb.countActive(true))
+       // }, undefined, this);
+       // this.scene.start('GameOver');
+
 
         // Camera changes to show the UI
         for (let cam of [backgroundCamera, uiCamera]) {

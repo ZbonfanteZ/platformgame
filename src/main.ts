@@ -5,8 +5,10 @@ import { Instruction } from './scenes/Instruction';
 import { MainMenu } from './scenes/MainMenu';
 import { Preloader } from './scenes/Preloader';
 
+
 import { Game, Types } from "phaser";
 import { WinScreen } from './scenes/WinScreen';
+import { Second } from './scenes/Second';
 
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
@@ -35,7 +37,7 @@ const config: Types.Core.GameConfig = {
         MainGame,
         GameOver,
         WinScreen,
-        Second
+        Second,
     ]
 };
 
